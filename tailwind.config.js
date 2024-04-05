@@ -6,6 +6,8 @@ export default {
       colors: {
         sideNavcolor: "#26201d",
         backgroundColor: "#231c17",
+        selectedNav: "#ff7808",
+        bodyColor: "#231C17",
       },
     },
   },
