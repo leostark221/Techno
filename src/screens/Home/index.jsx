@@ -37,6 +37,8 @@ export default function Home() {
     lineHeight: "24px",
   };
 
+  const naviagte = useNavigate();
+
   return (
     <div className="bg-bodyColor h-screen flex flex-col justify-center ">
       <div className="pt-10 max-w-screen-2xl mx-[300px] mr-2 h-full  ">

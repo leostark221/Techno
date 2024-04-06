@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 
 export default function Settings() {
-  const [select, setSelected] = useState("");
+  const [select, setSelected] = useState("profile");
   const [locked, setLocked] = useState(true);
 
   return (
