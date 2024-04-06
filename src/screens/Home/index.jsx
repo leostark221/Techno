@@ -1,43 +1,47 @@
 import React, { PureComponent } from "react";
 import {
   ResponsiveContainer,
-  ComposedChart,
-  Line,
-  Area,
-  Bar,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Tooltip,
-  Legend,
   PieChart,
   Pie,
+  ComposedChart,
+  CartesianGrid,
+  XAxis,
+  YAxis,
+  Tooltip,
+  Legend,
+  Area,
+  Bar,
+  Line,
+  RadialBarChart,
+  RadialBar,
 } from "recharts";
 
 export default function Home() {
   const data = [
-    { date: "2024-04-01", temperature: 100, voltage: 12, rpm: 1200 },
-    { date: "2024-04-02", temperature: 500, voltage: 11.5, rpm: 1550 },
-    { date: "2024-04-03", temperature: 26, voltage: 11.2, rpm: 1600 },
-    { date: "2024-04-04", temperature: 24, voltage: 12.1, rpm: 1620 },
-    { date: "2024-04-05", temperature: 600, voltage: 11.8, rpm: 1580 },
-    { date: "2024-04-06", temperature: 25, voltage: 11.3, rpm: 1550 },
+    { date: "2024-04-01", temperature: 4, voltage: 12, rpm: 1200 },
+    { date: "2024-04-02", temperature: 27, voltage: 11.5, rpm: 1250 },
+    { date: "2024-04-03", temperature: 26, voltage: 11.2, rpm: 1300 },
+    { date: "2024-04-04", temperature: 12, voltage: 12.1, rpm: 1350 },
+    { date: "2024-04-05", temperature: 23, voltage: 11.8, rpm: 1400 },
+    { date: "2024-04-06", temperature: 2, voltage: 11.3, rpm: 1450 },
   ];
-
   const data2 = [
-    { date: "2024-04-01", temperature: 100, voltage: 12, rpm: 1200 },
-    { date: "2024-04-02", temperature: 500, voltage: 11.5, rpm: 1550 },
-    { date: "2024-04-03", temperature: 26, voltage: 11.2, rpm: 1600 },
-    { date: "2024-04-04", temperature: 24, voltage: 12.1, rpm: 1620 },
-    { date: "2024-04-05", temperature: 600, voltage: 11.8, rpm: 1580 },
-    { date: "2024-04-06", temperature: 25, voltage: 11.3, rpm: 1550 },
+    { name: "Temp", value: 500 },
+    { name: "Voltage", value: 300 },
+    { name: "RPM", value: 200 },
   ];
+  const style = {
+    top: "50%",
+    right: 0,
+    transform: "translate(0, -50%)",
+    lineHeight: "24px",
+  };
 
   return (
-    <div className="bg-bodyColor  h-screen">
-      <div className="pt-10 max-w-screen-xl mx-auto  ">
+    <div className="bg-bodyColor h-screen flex flex-col justify-center ">
+      <div className="pt-10 max-w-screen-2xl mx-[300px] mr-2 h-full  ">
         <div className="text-white font-bold text-2xl">Home</div>
-        <div className=" mt-10 flex flex-col gap-10 ">
+        <div className=" mt-10 flex flex-col gap-10  justify-center ">
           <div className="flex flex w-full justify-between gap-10">
             <div className="flex-col px-10 text-white bg-sideNavcolor w-full h-96 pt-4 flex items-center ">
               <div className="text-2xl">Connected Machines </div>
@@ -64,14 +68,15 @@ export default function Home() {
                 </div>
               </div>
             </div>
-            <div className="text-white bg-sideNavcolor w-full h-96 flex justify-center">
-              Monitor
-              <div style={{ width: "100%", height: 300 }}>
-                <ResponsiveContainer>
-                  <PieChart>
-                    <Pie dataKey="date" data={data2} fill="#8884d8" label />
-                  </PieChart>
-                </ResponsiveContainer>
+            <div className="text-white bg-sideNavcolor w-full gap-10 cursor-pointer active:opacity-50 h-96 flex flex-col justify-center">
+              <div className="flex justify-center text-white font-bold text-2xl pt-2">
+                Monitor
+              </div>
+              <div className="w-full flex  flex-col items-center ">
+                <div className="bg-backgroundColor gap-5 w-60 rounded-full border-2 border-selectedNav flex flex-col  items-center h-60">
+                  <div className="mt-10 text-xl">Temp</div>
+                  <div className="text-6xl text-selectedNav  ">40C</div>
+                </div>
               </div>
             </div>
           </div>
@@ -79,7 +84,7 @@ export default function Home() {
             <div className="flex justify-center text-white font-bold text-2xl pt-2">
               Time Line
             </div>
-            <div style={{ width: "100%", height: "100%" }}>
+            <div style={{ width: "100%", height: 400 }}>
               <ResponsiveContainer>
                 <ComposedChart
                   width={500}
@@ -92,8 +97,8 @@ export default function Home() {
                     left: 20,
                   }}
                 >
-                  <CartesianGrid stroke="#f5f5f5" />
-                  <XAxis dataKey="date" />
+                  <CartesianGrid stroke="#ff7808" />
+                  <XAxis dataKey="date" scale="band" />
                   <YAxis />
                   <Tooltip />
                   <Legend />
@@ -101,10 +106,10 @@ export default function Home() {
                     type="monotone"
                     dataKey="temperature"
                     fill="#ff7808"
-                    stroke="#ff7808"
+                    stroke="white"
                   />
-                  <Bar dataKey="voltage" barSize={20} fill="#82ca9d" />
-                  <Line type="monotone" dataKey="rpm" stroke="#8884d8" />
+                  <Bar dataKey="temperature" barSize={20} fill="white" />
+                  <Line type="monotone" dataKey="voltage" stroke="#ff7808" />
                 </ComposedChart>
               </ResponsiveContainer>
             </div>

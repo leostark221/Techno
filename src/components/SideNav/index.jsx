@@ -12,7 +12,7 @@ export default function SideNav() {
 
   return (
     <div className="fixed inset-y-0 left-0 bg-sidebar w-60 items-center  z-10 flex flex-col bg-sideNavcolor ">
-      <div className="items-center gap-14 h-full mt-20 w-40 flex flex-col border-r-4 border-backgroundColor h-[70%]">
+      <div className="items-center  gap-14 h-full mt-20 w-40 flex flex-col border-r-4 border-backgroundColor h-[70%]">
         <div className=" gap-3 cursor-pointer active:opacity-50 flex items-center justify-center  w-full mt-10 ">
           <div
             className={
