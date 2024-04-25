@@ -6,10 +6,12 @@ import settings from "../assets/settings.png";
 import notSelectedsettings from "../assets/notSelectedsettings.png";
 import monitor from "../assets/monitor.png";
 import notSelectedmonitor from "../assets/notSelectedmonitor.png";
-import timeLine from "../assets/timeLine.png";
 import notSElectedtimeLine from "../assets/notSElectedtimeLine.png";
+import timeLine from "../assets/timeLine.png";
+import logo from "../assets/checklogo.png";
 
 const images = {
+  logo,
   notSElectedtimeLine,
   timeLine,
   notSelectedmonitor,

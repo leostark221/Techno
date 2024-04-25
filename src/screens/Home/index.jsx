@@ -1,4 +1,5 @@
 import React, { PureComponent } from "react";
+import { useNavigate } from "react-router-dom";
 import {
   ResponsiveContainer,
   PieChart,
@@ -18,12 +19,30 @@ import {
 
 export default function Home() {
   const data = [
-    { date: "2024-04-01", temperature: 4, voltage: 12, rpm: 1200 },
-    { date: "2024-04-02", temperature: 27, voltage: 11.5, rpm: 1250 },
-    { date: "2024-04-03", temperature: 26, voltage: 11.2, rpm: 1300 },
-    { date: "2024-04-04", temperature: 12, voltage: 12.1, rpm: 1350 },
-    { date: "2024-04-05", temperature: 23, voltage: 11.8, rpm: 1400 },
-    { date: "2024-04-06", temperature: 2, voltage: 11.3, rpm: 1450 },
+    {
+      time: "12:00",
+      temperature: 20,
+      humidity: 30,
+      voltage: 240,
+    },
+    {
+      time: "13:00",
+      temperature: 22,
+      humidity: 35,
+      voltage: 230,
+    },
+    {
+      time: "14:00",
+      temperature: 18,
+      humidity: 40,
+      voltage: 220,
+    },
+    {
+      time: "15:00",
+      temperature: 21,
+      humidity: 32,
+      voltage: 250,
+    },
   ];
   const data2 = [
     { name: "Temp", value: 500 },
@@ -37,18 +56,22 @@ export default function Home() {
     lineHeight: "24px",
   };
 
+  const navigate = useNavigate();
+
   // const naviagte = useNavigate();
 
   return (
     <div className="bg-bodyColor h-screen flex flex-col justify-center ">
       <div className="pt-10 max-w-screen-2xl mx-[300px] mr-2 h-full  ">
-        <div className="text-white font-bold text-2xl">Home</div>
+        <div className="text-black font-bold text-4xl w-full flex justify-center">
+          Home{" "}
+        </div>
         <div className=" mt-10 flex flex-col gap-10  justify-center ">
           <div className="flex flex w-full justify-between gap-10">
-            <div className="flex-col px-10 text-white bg-sideNavcolor w-full h-96 pt-4 flex items-center ">
+            <div className="flex-col px-10  bg-content w-full h-96 pt-4 flex items-center ">
               <div className="text-2xl">Connected Machines </div>
               <div className="gap-4 flex flex-col  w-full mt-10">
-                <div className="flex h-10 items-center  justify-between bg-orange-500">
+                <div className="flex h-10 items-center  justify-between ">
                   <div>Machine Name</div>
                   <div>Machine Status</div>
                 </div>
@@ -70,48 +93,58 @@ export default function Home() {
                 </div>
               </div>
             </div>
-            <div className="text-white bg-sideNavcolor w-full gap-10 cursor-pointer active:opacity-50 h-96 flex flex-col justify-center">
-              <div className="flex justify-center text-white font-bold text-2xl pt-2">
+            <div className="text-white bg-content w-full gap-10  h-96 flex flex-col justify-center">
+              <div className="flex justify-center text-black font-bold text-2xl pt-2">
                 Monitor
               </div>
               <div className="w-full flex  flex-col items-center ">
-                <div className="bg-backgroundColor gap-5 w-60 rounded-full border-2 border-selectedNav flex flex-col  items-center h-60">
+                <div
+                  className="bg-backgroundColor gap-5 w-60 rounded-full border-2 border-selectedNav flex flex-col
+                cursor-pointer active:opacity-50  items-center h-60"
+                  onClick={() => navigate("/monitor")}
+                >
                   <div className="mt-10 text-xl">Temp</div>
-                  <div className="text-6xl text-selectedNav  ">40C</div>
+                  <div className="text-6xl text-selectedNav">40C</div>
                 </div>
               </div>
             </div>
           </div>
-          <div className="bg-sideNavcolor h-full ">
+          <div className="bg-content h-full ">
             <div className="flex justify-center text-white font-bold text-2xl pt-2">
               Time Line
             </div>
             <div style={{ width: "100%", height: 400 }}>
-              <ResponsiveContainer>
+              <ResponsiveContainer width="100%" height={400}>
                 <ComposedChart
-                  width={500}
-                  height={400}
                   data={data}
-                  margin={{
-                    top: 20,
-                    right: 20,
-                    bottom: 20,
-                    left: 20,
-                  }}
+                  margin={{ top: 20, right: 20, bottom: 20, left: 20 }}
                 >
-                  <CartesianGrid stroke="#ff7808" />
-                  <XAxis dataKey="date" scale="band" />
-                  <YAxis />
+                  <CartesianGrid stroke="#f5f5f5" />
+                  <XAxis dataKey="time" scale="band" />
+                  <YAxis yAxisId="left" orientation="left" stroke="#8884d8" />
+                  <YAxis yAxisId="right" orientation="right" stroke="#82ca9d" />
                   <Tooltip />
                   <Legend />
-                  <Area
+
+                  <Bar
+                    dataKey="voltage"
+                    barSize={20}
+                    fill="#413ea0"
+                    yAxisId="right"
+                  />
+                  <Line
                     type="monotone"
                     dataKey="temperature"
-                    fill="#ff7808"
-                    stroke="white"
+                    stroke="#8884d8"
+                    yAxisId="left"
                   />
-                  <Bar dataKey="temperature" barSize={20} fill="white" />
-                  <Line type="monotone" dataKey="voltage" stroke="#ff7808" />
+                  <Line
+                    type="monotone"
+                    dataKey="humidity"
+                    stroke="#82ca9d"
+                    dot={false}
+                    yAxisId="left"
+                  />
                 </ComposedChart>
               </ResponsiveContainer>
             </div>

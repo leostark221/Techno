@@ -12,13 +12,14 @@ export default function SideNav() {
 
   return (
     <div className="fixed inset-y-0 left-0 bg-sidebar w-60 items-center  z-10 flex flex-col bg-sideNavcolor ">
-      <div className="items-center  gap-14 h-full mt-20 w-40 flex flex-col border-r-4 border-backgroundColor h-[70%]">
+      <div className="items-center  gap-6 h-full mt-4 w-40 flex flex-col h-[70%]">
+        <img src={images.logo} alt="" />
         <div className=" gap-3 cursor-pointer active:opacity-50 flex items-center justify-center  w-full mt-10 ">
           <div
             className={
               activePath == "/"
                 ? `w-40 p-2  border-2  rounded-lg flex items-center-center gap-2  bg-selectedNav text-white font-bold`
-                : `w-40 p-2 flex items-center-center gap-2   text-white font-bold`
+                : `w-40 p-2 flex items-center-center gap-2   text-baseText font-bold`
             }
             onClick={() => navigate("")}
           >
@@ -35,13 +36,13 @@ export default function SideNav() {
             className={
               activePath == "/TimeLine"
                 ? `w-40 p-2 border-2 rounded-lg flex items-center-center gap-2  bg-selectedNav text-white font-bold`
-                : `w-40 p-2 flex items-center-center gap-2   text-white font-bold`
+                : `w-40 p-2 flex items-center-center gap-2   text-baseText font-bold`
             }
             onClick={() => navigate("/TimeLine")}
           >
             <img
               src={
-                selected == "TimeLine"
+                activePath == "/TimeLine"
                   ? images.timeLine
                   : images.notSElectedtimeLine
               }
@@ -56,13 +57,13 @@ export default function SideNav() {
             className={
               activePath == "/monitor"
                 ? `w-40 p-2 border-2 rounded-lg flex items-center-center gap-2  bg-selectedNav text-white font-bold`
-                : `w-40 p-2 flex items-center-center gap-2   text-white font-bold`
+                : `w-40 p-2 flex items-center-center gap-2   text-baseText font-bold`
             }
             onClick={() => navigate("/monitor")}
           >
             <img
               src={
-                selected == "monitor"
+                activePath == "/monitor"
                   ? images.monitor
                   : images.notSelectedmonitor
               }
@@ -77,13 +78,13 @@ export default function SideNav() {
             className={
               activePath == "/setting"
                 ? `w-40 p-2 border-2 rounded-lg flex items-center-center gap-2  bg-selectedNav text-white font-bold`
-                : `w-40 p-2 flex items-center-center gap-2   text-white font-bold`
+                : `w-40 p-2 flex items-center-center gap-2   text-baseText font-bold`
             }
             onClick={() => navigate("/setting")}
           >
             <img
               src={
-                selected == "Settings"
+                activePath == "/setting"
                   ? images.settings
                   : images.notSelectedsettings
               }

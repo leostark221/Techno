@@ -4,10 +4,12 @@ export default {
   theme: {
     extend: {
       colors: {
-        sideNavcolor: "#26201d",
-        backgroundColor: "#231c17",
-        selectedNav: "#ff7808",
-        bodyColor: "#231C17",
+        content: "#FFFF",
+        sideNavcolor: "#FFFF",
+        backgroundColor: "#f5f7ff",
+        selectedNav: "#4b49ac",
+        bodyColor: "#EFF2FB",
+        baseText: "#999999",
       },
     },
   },
