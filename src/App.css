@@ -1,8 +1,6 @@
 ::-webkit-scrollbar{
     display: none;
   }
-  
-  
   .remove-arrow::-webkit-inner-spin-button,
   .remove-arrow::-webkit-outer-spin-button {
     -webkit-appearance: none;
@@ -18,8 +16,4 @@
   
   .error{
     color: #AB0000;
-  }
-  
-  .bg-graypurple{
-    background-color: #463e56;
   }
