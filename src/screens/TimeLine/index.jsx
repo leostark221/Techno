@@ -1,4 +1,5 @@
 import React, { PureComponent } from "react";
+import { useEffect } from "react";
 import {
   ResponsiveContainer,
   PieChart,
@@ -17,6 +18,7 @@ import {
   Brush,
   BarChart,
   Cell,
+  Scatter,
 } from "recharts";
 
 export default function GraphTimeLine() {
@@ -85,17 +87,21 @@ export default function GraphTimeLine() {
   };
 
   return (
-    <div className="bg-bodyColor h-screen-2xl flex flex-col justify-center ">
-      <div className="pt-10 max-w-screen-2xl mx-[300px] mr-2 h-full  ">
-        <div className="text-black font-bold text-4xl w-full flex justify-center">
+    <div className="bg-bodyColor h-screen flex flex-col justify-center overflow-auto ">
+      <div className="ml-[90px] sm:ml-[245px] md:ml-[300px] mr-2 h-full pt-10 pr-10  ">
+        <div className="text-black font-bold text-xl sm:text-3xl w-full flex justify-start">
           Time Line
         </div>
-        <div className=" mt-10 flex flex-col gap-10  justify-center ">
-          <div className="bg-sideNavcolor h-full ">
-            <div className="flex justify-center text-white font-bold text-2xl pt-2">
+        <div className=" mt-5 flex flex-col w-full ">
+          <div className=" h-full flex w-full gap-5 flex-col ">
+            <div className="flex justify-center text-black font-bold text-2xl pt-2">
               Machine One
             </div>
-            <div style={{ width: "100%", height: 400 }}>
+            <div
+              className="bg-white py-2 "
+              style={{ width: "100%", height: 300 }}
+            >
+              <div className="text-center text-2xl ">Temp Based Time</div>
               <ResponsiveContainer width="100%" height={300}>
                 <BarChart data={data}>
                   <CartesianGrid strokeDasharray="3 3" />
@@ -107,8 +113,7 @@ export default function GraphTimeLine() {
                 </BarChart>
               </ResponsiveContainer>
             </div>
-
-            <div style={{ width: "100%" }}>
+            <div className="bg-white" style={{ width: "100%" }}>
               <ResponsiveContainer width="100%" height={300}>
                 <BarChart data={data}>
                   <CartesianGrid strokeDasharray="3 3" />
@@ -120,13 +125,16 @@ export default function GraphTimeLine() {
                   <Bar dataKey="humidity" fill="#82ca9d" />
                 </BarChart>
               </ResponsiveContainer>
+            </div>
+            <div className="bg-white">
               <ResponsiveContainer width="100%" height={300}>
                 <PieChart>
+                  <Legend />
                   <Pie
                     data={data}
                     cx="50%"
                     cy="50%"
-                    outerRadius={120}
+                    outerRadius={100}
                     fill="#8884d8"
                     dataKey="voltage"
                     onMouseEnter={(_, index, e) => {}}
@@ -141,8 +149,55 @@ export default function GraphTimeLine() {
                     ))}
                   </Pie>
                   <Tooltip content={renderCustomTooltip} />
-                  <Legend />
                 </PieChart>
+              </ResponsiveContainer>
+            </div>
+          </div>
+          <div className=" h-full flex w-full gap-5 flex-col mt-[4%] ">
+            <div
+              className="bg-white py-2 "
+              style={{ width: "100%", height: 300 }}
+            >
+              <div className="text-center text-2xl ">
+                Temp & voltage based Time
+              </div>
+              <ResponsiveContainer width="100%" height="100%">
+                <ComposedChart
+                  width={500}
+                  height={400}
+                  data={data}
+                  margin={{
+                    top: 20,
+                    right: 20,
+                    bottom: 20,
+                    left: 20,
+                  }}
+                >
+                  <CartesianGrid stroke="#f5f5f5" />
+                  <XAxis dataKey="time" />
+                  <YAxis />
+                  <Tooltip />
+                  <Legend />
+                  <Bar dataKey="voltage" barSize={20} fill="#413ea0" />
+                  <Line
+                    type="monotone"
+                    dataKey="temperature"
+                    stroke="#ff7300"
+                  />
+                </ComposedChart>
+              </ResponsiveContainer>
+            </div>
+            <div className="bg-white" style={{ width: "100%" }}>
+              <ResponsiveContainer width="100%" height={300}>
+                <BarChart data={data}>
+                  <CartesianGrid strokeDasharray="3 3" />
+                  <XAxis dataKey="time" />
+                  <YAxis />
+                  <Tooltip />
+                  <Legend />
+                  <Bar dataKey="temperature" fill="#8884d8" />
+                  <Bar dataKey="humidity" fill="#82ca9d" />
+                </BarChart>
               </ResponsiveContainer>
             </div>
           </div>

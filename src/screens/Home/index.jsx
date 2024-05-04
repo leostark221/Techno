@@ -122,7 +122,7 @@ export default function Home() {
   return (
     <div className="bg-backgroundColor min-h-screen overflow-auto  max-w-screen flex flex-col justify-center sm:pr-10   ">
       <div className=" ml-[90px] sm:ml-[270px] md:ml-[300px] mr-2 h-full ">
-        <div className="text-black font-bold text-xl sm:text-4xl w-full flex justify-center pt-10">
+        <div className="text-black font-bold text-xl sm:text-3xlstart w-full flex justify- pt-10">
           Home
         </div>
         <div className="mt-10 flex flex-col gap-10  justify-center">
