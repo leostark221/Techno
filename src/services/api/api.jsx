@@ -26,6 +26,18 @@ export const fetchData = async (user_id) => {
   }
 };
 
+export const deleteUser = async (userId) => {
+  try {
+    const response = await axios.delete(`${API_BASE_URL}/deleteUsers.php`, {
+      data: { user_id: userId },
+    });
+    return response.data;
+  } catch (error) {
+    console.error("Error deleting user:", error);
+    throw error;
+  }
+};
+
 export const insertData = (data) => {
   return axios
     .post(`${API_BASE_URL}/insert_data.php`, data)

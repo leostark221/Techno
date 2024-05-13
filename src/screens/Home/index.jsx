@@ -74,7 +74,7 @@ export default function Home() {
                   <div>Machine ID</div>
                   <div>Machine Status</div>
                 </div>
-                <div className="w-full px-2 sm:px-10 overflow-scroll max-h-[274px]">
+                <div className="w-full px-2 sm:px-10 overflow-scroll max-h-[274px] mt-5">
                   {data.length > 0 ? (
                     data.map((machine, index) => (
                       <div

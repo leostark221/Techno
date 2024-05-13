@@ -4,6 +4,7 @@ import {
   fetchUsers,
   signupUser,
   uploadUser,
+  deleteUser,
 } from "../../services/api/api";
 
 export default function Admin() {
@@ -37,6 +38,7 @@ export default function Admin() {
       const response = await uploadUser({ username, password });
       console.log("Registration Success:", response.data);
       alert("User registered successfully!");
+      userDataShow(); // Refresh the user data
     } catch (error) {
       console.error("Registration Failed:", error.response.data);
       alert("Registration failed: " + error.response.data.message);
@@ -65,6 +67,18 @@ export default function Admin() {
         "Assignment failed: " +
           (error.response?.data?.message || "No error message")
       );
+    }
+  };
+
+  const handleDeleteUser = async (userId) => {
+    try {
+      const response = await deleteUser(userId);
+      console.log("Delete Success:", response);
+      alert("User deleted successfully!");
+      userDataShow(); // Refresh the user data
+    } catch (error) {
+      console.error("Delete failed:", error);
+      alert("Delete failed: " + error.message);
     }
   };
 
@@ -153,6 +167,21 @@ export default function Admin() {
                     <div className="text-2xl text-selectedNav cursor-pointer active:opacity-50">
                       Delete Account
                     </div>
+                    <div className="w-full flex flex-col gap-4 pt-5">
+                      <input
+                        type="text"
+                        className="bg-transparent  border pl-4 rounded-3xl h-10 border-selectedNav w-full focus:outline-none"
+                        placeholder="Enter User ID to delete"
+                        value={userId}
+                        onChange={(e) => setUserId(e.target.value)}
+                      />
+                      <button
+                        onClick={() => handleDeleteUser(userId)}
+                        className="bg-red-500 text-white p-2 rounded"
+                      >
+                        Delete
+                      </button>
+                    </div>
                   </div>
                 ) : select === "adduser" ? (
                   <div className="mt-10 ">
@@ -194,7 +223,7 @@ export default function Admin() {
                 ) : select === "assignMachines" ? (
                   <div className="mt-10 ">
                     <div className="text-2xl text-selectedNav cursor-pointer active:opacity-50">
-                      Add Users
+                      Assign Machines
                     </div>
                     <div className="w-full flex gap-4 pt-5">
                       <input
