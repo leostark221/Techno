@@ -17,6 +17,7 @@ export default function SideNav() {
   const handleLogout = () => {
     localStorage.removeItem("userToken"); // Remove token from storage
     localStorage.removeItem("adminToken"); // Remove token from storage
+    localStorage.removeItem("userID"); // Remove token from storage
     dispatch(logout()); // Update Redux state
     navigate("/login"); // Redirect to login page
   };
@@ -86,7 +87,7 @@ export default function SideNav() {
                 <div className="sm:flex hidden">Monitor</div>
               </div>
             </div>
-            <div className="gap-3 cursor-pointer active:opacity-50 flex items-center justify-center  w-full mt-10">
+            {/* <div className="gap-3 cursor-pointer active:opacity-50 flex items-center justify-center  w-full mt-10">
               <div
                 className={
                   activePath == "/setting"
@@ -106,7 +107,7 @@ export default function SideNav() {
                 />
                 <div className="sm:flex hidden">Settings</div>
               </div>
-            </div>
+            </div> */}
           </div>
         ) : (
           <div>

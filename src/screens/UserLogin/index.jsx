@@ -12,13 +12,14 @@ export default function UserLogin() {
   const [UA, setUA] = useState("user");
   const navigate = useNavigate();
 
-  const hanldeUserLogin = async () => {
+  const handleUserLogin = async () => {
     try {
-      const credentials = { username, password }; // Prepare credentials
+      const credentials = { username, password };
       const response = await loginUser(credentials);
       if (response.message === "Login successful") {
-        localStorage.setItem("userToken", "UserToken"); // Save token to localStorage
-        dispatch(userLogin(response)); // Dispatch action to update Redux store
+        localStorage.setItem("userToken", response); // Assuming token is part of the response
+        localStorage.setItem("userID", response.user_id); // Save the user ID from the response
+        dispatch(userLogin(response.token, response.user_id)); // Pass both token and user ID
         navigate("/"); // Navigate to the home page
         console.log("SUCCESS USER LOGGED IN");
       } else {
@@ -26,14 +27,11 @@ export default function UserLogin() {
         console.log(":(");
       }
     } catch (error) {
-      if ((username == "") | (password == "")) {
-        setError("Enter Username & password");
-      } else {
-        setError("Incorrect Login");
-        console.error("Login error:", error);
-      }
+      setError("Login error:" + error.message);
+      console.error("Login error:", error);
     }
   };
+
   const handleAdminLogin = async () => {
     try {
       const credentials = { username, password };
@@ -111,10 +109,8 @@ export default function UserLogin() {
             onClick={() => {
               if (UA === "admin") {
                 handleAdminLogin();
-                console.log("HTis is runing by admin");
               } else {
-                hanldeUserLogin();
-                console.log("HTis is runing by user");
+                handleUserLogin();
               }
             }}
           >

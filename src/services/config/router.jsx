@@ -22,11 +22,11 @@ const router = createBrowserRouter([
         element: <ProtectedRoute />,
         children: [{ index: true, element: <Home /> }],
       },
-      {
-        path: "/setting",
-        element: <ProtectedRoute />,
-        children: [{ index: true, element: <Settings /> }],
-      },
+      // {
+      //   path: "/setting",
+      //   element: <ProtectedRoute />,
+      //   children: [{ index: true, element: <Settings /> }],
+      // },
       {
         path: "/monitor",
         element: <ProtectedRoute />,

@@ -1,107 +1,80 @@
-import React, { PureComponent, useState } from "react";
-import { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import {
   ResponsiveContainer,
-  PieChart,
-  Pie,
   ComposedChart,
   CartesianGrid,
   XAxis,
   YAxis,
   Tooltip,
   Legend,
-  Area,
-  Bar,
   Line,
-  AreaChart,
-  LineChart,
-  Brush,
-  BarChart,
-  Cell,
-  Scatter,
+  Bar,
 } from "recharts";
-import { fetchData } from "../../services/api/api";
+import { fetchLoggedInUsers } from "../../services/api/api";
 
 export default function GraphTimeLine() {
   const [data, setData] = useState([]);
-  const COLORS = ["#0088FE", "#00C49F", "#FFBB28"];
-
-  const apiData = async () => {
-    try {
-      const incomingData = await fetchData();
-      setData(incomingData);
-    } catch {
-      console.log("THIS DATA NOT COMMING :(");
-    }
-  };
+  const [selectedMachineId, setSelectedMachineId] = useState(null);
+  const [filteredData, setFilteredData] = useState([]);
 
   useEffect(() => {
-    apiData();
-    console.log("THis is Data ---,.>", data);
-  }, []);
-
-  const renderActiveShape = (props) => {
-    const RADIAN = Math.PI / 180;
-    const {
-      cx,
-      cy,
-      midAngle,
-      innerRadius,
-      outerRadius,
-      startAngle,
-      endAngle,
-      fill,
-      payload,
-      percent,
-      value,
-    } = props;
-    const sin = Math.sin(-RADIAN * midAngle);
-    const cos = Math.cos(-RADIAN * midAngle);
-    const sx = cx + (outerRadius + 10) * cos;
-    const sy = cy + (outerRadius + 10) * sin;
-    const mx = cx + (outerRadius + 30) * cos;
-    const my = cy + (outerRadius + 30) * sin;
-    const ex = mx + (cos >= 0 ? 1 : -1) * 22;
-    const ey = my;
-    const textAnchor = cos >= 0 ? "start" : "end";
-  };
-
-  const renderCustomTooltip = ({ active, payload }) => {
-    if (active && payload && payload.length) {
-      return (
-        <div
-          style={{
-            backgroundColor: "#fff",
-            padding: "5px",
-            border: "1px solid #ddd",
-          }}
-        >
-          <p>{`${payload[0].name}: ${payload[0].value}`}</p>
-        </div>
-      );
+    const machineID = localStorage.getItem("selectedMachineID");
+    console.log("Retrieved Machine ID from Local Storage:", machineID);
+    if (machineID) {
+      setSelectedMachineId(machineID);
     }
 
-    return null;
-  };
+    const apiData = async () => {
+      try {
+        const userId = localStorage.getItem("userID");
+        console.log("Retrieved User ID from Local Storage:", userId);
+        if (userId) {
+          const incomingData = await fetchLoggedInUsers(userId);
+          console.log("Fetched Data:", incomingData);
+          setData(incomingData);
+        }
+      } catch (error) {
+        console.log("THIS DATA NOT COMING :(", error);
+      }
+    };
+
+    apiData();
+  }, []);
+
+  useEffect(() => {
+    console.log("Selected Machine ID:", selectedMachineId);
+    console.log("Data:", data);
+
+    if (selectedMachineId) {
+      const machine = data.find((machine) => {
+        console.log("Comparing:", machine.machineID, "with", selectedMachineId);
+        return machine.machineID == selectedMachineId;
+      });
+      console.log("Selected Machine:", machine);
+      setFilteredData(machine ? machine.machineData : []);
+    }
+  }, [selectedMachineId, data]);
+
+  console.log("Filtered Data:", filteredData);
 
   return (
-    <div className="bg-bodyColor h-screen flex flex-col justify-center overflow-auto  ">
-      <div className="ml-[90px] sm:ml-[245px] md:ml-[300px] mr-2 h-full pt-10 md:pr-10  ">
+    <div className="bg-bodyColor h-screen flex flex-col justify-center overflow-auto">
+      <div className="ml-[90px] sm:ml-[245px] md:ml-[300px] mr-2 h-full pt-10 md:pr-10">
         <div className="text-black font-bold text-xl sm:text-3xl w-full flex justify-start">
           Time Line
         </div>
-        <div className=" mt-5 flex flex-col w-full  ">
-          <div className=" h-full flex w-full  flex-col ">
+        <div className="mt-5 flex flex-col w-full">
+          <div className="h-full flex w-full flex-col">
             <div className="flex justify-center text-black font-bold text-2xl pt-2">
-              Machine One
+              Machine {selectedMachineId}
             </div>
             <div
-              className="bg-white  h-[400px] flex flex-col items-center justify-center "
+              className="bg-white h-[400px] flex flex-col items-center justify-center"
               style={{ width: "100%" }}
             >
-              <div className="text-center text-2xl ">Temp Based Time</div>
+              <div className="text-center text-2xl">Temp Based Time</div>
               <ResponsiveContainer width="100%" height={300}>
-                <ComposedChart data={data}>
+                <ComposedChart data={filteredData}>
                   <CartesianGrid stroke="#f5f5f5" />
                   <XAxis dataKey="fulldate" />
                   <YAxis
@@ -157,102 +130,44 @@ export default function GraphTimeLine() {
                 </ComposedChart>
               </ResponsiveContainer>
             </div>
-            <div
-              className="bg-white h-[400px] flex items-center mt-4"
-              style={{ width: "100%" }}
-            >
-              <ResponsiveContainer width="100%" height={300}>
-                <BarChart data={data}>
-                  <CartesianGrid strokeDasharray="3 3" />
-                  <XAxis dataKey="time" />
-                  <YAxis />
-                  <Tooltip />
-                  <Legend />
-                  <Bar dataKey="temperature" fill="#8884d8" />
-                  <Bar dataKey="humidity" fill="#82ca9d" />
-                </BarChart>
-              </ResponsiveContainer>
-            </div>
-            <div
-              className="bg-white h-[400px] flex flex-col items-center justify-center
-            mt-4"
-            >
-              {/* <ResponsiveContainer width="100%">
-                <PieChart>
-                  <Legend />
-                  <Pie
-                    data={data}
-                    cx="50%"
-                    cy="50%"
-                    outerRadius={100}
-                    fill="#8884d8"
-                    dataKey="voltage"
-                    onMouseEnter={(_, index, e) => {}}
-                    activeShape={renderActiveShape}
-                    labelLine={false}
-                  >
-                    {data?.map((entry, index) => (
-                      <Cell
-                        key={`cell-${index}`}
-                        fill={COLORS[index % COLORS.length]}
-                      />
-                    ))}
-                  </Pie>
-                  <Tooltip content={renderCustomTooltip} />
-                </PieChart>
-              </ResponsiveContainer> */}
-            </div>
           </div>
-          <div className=" h-full flex w-full gap-5 flex-col mt-[4%] ">
-            <div
-              className="bg-white h-[400px] flex flex-col items-center justify-center "
-              style={{ width: "100%" }}
-            >
-              <div className="text-center text-2xl ">
-                Temp & voltage based Time
+          <div className="bg-white">
+            <div className="flex justify-center text-black font-bold text-2xl pt-2">
+              Time Line
+            </div>
+
+            {filteredData.length > 0 ? (
+              <div className="h-[300px] sm:h-[500px]">
+                <ResponsiveContainer width="100%" height="100%">
+                  <ComposedChart data={filteredData}>
+                    <CartesianGrid stroke="#f5f5f5" />
+                    <XAxis dataKey="fulltime" />
+                    <YAxis yAxisId="left" orientation="left" stroke="#8884d8" />
+                    <YAxis
+                      yAxisId="right"
+                      orientation="right"
+                      stroke="#82ca9d"
+                    />
+                    <Tooltip />
+                    <Legend />
+                    <Bar
+                      dataKey="volt"
+                      barSize={20}
+                      fill="#413ea0"
+                      yAxisId="right"
+                    />
+                    <Line
+                      type="monotone"
+                      dataKey="temp"
+                      stroke="#8884d8"
+                      yAxisId="left"
+                    />
+                  </ComposedChart>
+                </ResponsiveContainer>
               </div>
-              <ResponsiveContainer width="100%" height="100%">
-                <ComposedChart
-                  width={500}
-                  height={400}
-                  data={data}
-                  margin={{
-                    top: 20,
-                    right: 20,
-                    bottom: 20,
-                    left: 20,
-                  }}
-                >
-                  <CartesianGrid stroke="#f5f5f5" />
-                  <XAxis dataKey="time" />
-                  <YAxis />
-                  <Tooltip />
-                  <Legend />
-                  <Bar dataKey="voltage" barSize={20} fill="#413ea0" />
-                  <Line
-                    type="monotone"
-                    dataKey="temperature"
-                    stroke="#ff7300"
-                  />
-                </ComposedChart>
-              </ResponsiveContainer>
-            </div>
-            <div
-              className="bg-white h-[400px] flex flex-col items-center justify-center mb-10"
-              style={{ width: "100%" }}
-            >
-              <ResponsiveContainer width="100%" height={300}>
-                <BarChart data={data}>
-                  <CartesianGrid strokeDasharray="3 3" />
-                  <XAxis dataKey="time" />
-                  <YAxis />
-                  <Tooltip />
-                  <Legend />
-                  <Bar dataKey="temperature" fill="#8884d8" />
-                  <Bar dataKey="humidity" fill="#82ca9d" />
-                </BarChart>
-              </ResponsiveContainer>
-            </div>
+            ) : (
+              <div>Loading...</div>
+            )}
           </div>
         </div>
       </div>

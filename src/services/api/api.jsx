@@ -3,14 +3,27 @@ import axios from "axios";
 
 const API_BASE_URL = "http://localhost"; // Change this according to your actual API URL
 
-export const fetchData = () => {
-  return axios
-    .get(`${API_BASE_URL}/fetch_data.php`)
-    .then((response) => response.data)
-    .catch((error) => {
-      console.error("Failed to fetch data:", error);
-      throw error;
-    });
+export const fetchLoggedInUsers = async (user_id) => {
+  try {
+    const response = await axios.get(
+      `${API_BASE_URL}/fetchLoggedInUsers.php?user_id=${user_id}`
+    );
+    return response.data; // this will be your machine data
+  } catch (error) {
+    console.error("Error fetching machine data:", error);
+    throw error;
+  }
+};
+export const fetchData = async (user_id) => {
+  try {
+    const response = await axios.get(
+      `${API_BASE_URL}/fetchUsers.php?user_id=${user_id}`
+    );
+    return response.data; // this will be your machine data
+  } catch (error) {
+    console.error("Error fetching machine data:", error);
+    throw error;
+  }
 };
 
 export const insertData = (data) => {

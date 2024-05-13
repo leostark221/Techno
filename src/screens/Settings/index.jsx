@@ -6,7 +6,7 @@ export default function Settings() {
 
   return (
     <div className="bg-bodyColor h-screen flex flex-col justify-center overflow-auto ">
-      <div className="pt-10 max-w-screen-2xl mx-[300px] mr-2 h-full  ">
+      {/* <div className="pt-10 max-w-screen-2xl mx-[300px] mr-2 h-full  ">
         <div className=" mt-10 flex flex-col gap-10  justify-center ">
           <div className=" h-[800px] w-full  flex flex-col ">
             <div className="text-black font-bold text-4xl w-full flex justify-center">
@@ -24,16 +24,6 @@ export default function Settings() {
                 >
                   Manage Profile
                 </div>
-                {/* <div
-                  className={
-                    select === "machine"
-                      ? ` text-selectedNav  text-2xl cursor-pointer active:opacity-50`
-                      : `text-black   text-2xl cursor-pointer active:opacity-50`
-                  }
-                  onClick={() => setSelected("machine")}
-                >
-                  Manage Machines
-                </div> */}
                 <div
                   className={
                     select === "delete"
@@ -98,7 +88,7 @@ export default function Settings() {
             </div>
           </div>
         </div>
-      </div>
+      </div> */}
     </div>
   );
 }

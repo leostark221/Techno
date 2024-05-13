@@ -8,7 +8,8 @@ const authReducer = (state = initialState, action) => {
     case "LOGIN_USER":
       return {
         ...state,
-        userToken: action.payload,
+        userToken: action.payload.token,
+        userID: action.payload.userID,
       };
     case "LOGIN_ADMIN":
       return {
