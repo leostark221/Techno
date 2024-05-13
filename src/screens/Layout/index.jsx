@@ -1,14 +1,18 @@
 import React, { useState, createContext, useContext, useEffect } from "react";
-import { Outlet } from "react-router-dom";
+import { Outlet, useLocation } from "react-router-dom";
 import SideNav from "../../components/SideNav";
 
-const ModalContext = createContext();
-
 const Layout = () => {
+  const ModalContext = createContext();
+
+  const location = useLocation();
+
+  const activePath = location.pathname;
+
   return (
     <>
       <ModalContext.Provider value={{}}>
-        <SideNav />
+        {activePath === "/login" ? <></> : <SideNav />}
         <Outlet />
       </ModalContext.Provider>
     </>

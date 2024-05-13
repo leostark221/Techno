@@ -1,4 +1,4 @@
-import React, { PureComponent, useState } from "react";
+import React, { PureComponent, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {
   ResponsiveContainer,
@@ -16,44 +16,19 @@ import {
   RadialBarChart,
   RadialBar,
 } from "recharts";
+import { fetchData } from "../../services/api/api";
 
 export default function Home() {
-  const data = [
-    {
-      time: "12:00",
-      temperature: 20,
-      humidity: 30,
-      voltage: 240,
-    },
-    {
-      time: "13:00",
-      temperature: 22,
-      humidity: 35,
-      voltage: 230,
-    },
-    {
-      time: "14:00",
-      temperature: 18,
-      humidity: 40,
-      voltage: 220,
-    },
-    {
-      time: "15:00",
-      temperature: 21,
-      humidity: 32,
-      voltage: 250,
-    },
-  ];
-  const data2 = [
-    { name: "Temp", value: 500 },
-    { name: "Voltage", value: 300 },
-    { name: "RPM", value: 200 },
-  ];
-  const style = {
-    top: "50%",
-    right: 0,
-    transform: "translate(0, -50%)",
-    lineHeight: "24px",
+  const [data, setData] = useState([{}]);
+  const navigate = useNavigate();
+
+  const apiData = async () => {
+    try {
+      const incomingData = await fetchData();
+      setData(incomingData);
+    } catch {
+      console.log("NO INCOMING DATA");
+    }
   };
 
   const [machineStatus, setMachineStatus] = useState([
@@ -115,9 +90,10 @@ export default function Home() {
     },
   ]);
 
-  const navigate = useNavigate();
-
-  // const naviagte = useNavigate();
+  useEffect(() => {
+    apiData();
+    console.log("DATA CONNECTED!! ---->", data);
+  }, []);
 
   return (
     <div className="bg-backgroundColor min-h-screen overflow-auto  max-w-screen flex flex-col justify-center sm:pr-10   ">
@@ -167,7 +143,9 @@ export default function Home() {
                 >
                   <div className="mt-10 sm:text-xl">Temp</div>
                   <div className="text-4xl sm:text-6xl text-selectedNav">
-                    40C
+                    {data.length > 0
+                      ? `${data[data.length - 1]?.temp}°C`
+                      : "Loading..."}
                   </div>
                 </div>
               </div>
@@ -177,41 +155,40 @@ export default function Home() {
             <div className="flex justify-center text-black font-bold text-2xl pt-2 ">
               Time Line
             </div>
-            <div className="h-[300px] sm:h-[500px] ">
-              <ResponsiveContainer width="100%" height="100%">
-                <ComposedChart
-                  data={data}
-                  // margin={{ top: 20, right: 20, bottom: 20, left: 20 }}
-                >
-                  <CartesianGrid stroke="#f5f5f5" />
-                  <XAxis dataKey="time" scale="band" />
-                  <YAxis yAxisId="left" orientation="left" stroke="#8884d8" />
-                  <YAxis yAxisId="right" orientation="right" stroke="#82ca9d" />
-                  <Tooltip />
-                  <Legend />
 
-                  <Bar
-                    dataKey="voltage"
-                    barSize={20}
-                    fill="#413ea0"
-                    yAxisId="right"
-                  />
-                  <Line
-                    type="monotone"
-                    dataKey="temperature"
-                    stroke="#8884d8"
-                    yAxisId="left"
-                  />
-                  <Line
-                    type="monotone"
-                    dataKey="humidity"
-                    stroke="#82ca9d"
-                    dot={false}
-                    yAxisId="left"
-                  />
-                </ComposedChart>
-              </ResponsiveContainer>
-            </div>
+            {data.length > 0 ? (
+              <div className="h-[300px] sm:h-[500px] ">
+                <ResponsiveContainer width="100%" height="100%">
+                  <ComposedChart data={data}>
+                    <CartesianGrid stroke="#f5f5f5" />
+                    <XAxis dataKey="fulltime" />
+                    <YAxis yAxisId="left" orientation="left" stroke="#8884d8" />
+                    <YAxis
+                      yAxisId="right"
+                      orientation="right"
+                      stroke="#82ca9d"
+                    />
+                    <Tooltip />
+                    <Legend />
+                    <Bar
+                      dataKey="volt"
+                      barSize={20}
+                      fill="#413ea0"
+                      yAxisId="right"
+                    />
+                    <Line
+                      type="monotone"
+                      dataKey="temp"
+                      stroke="#8884d8"
+                      yAxisId="left"
+                    />
+                  </ComposedChart>
+                </ResponsiveContainer>
+              </div>
+            ) : (
+              // <div>Hello</div>
+              <div>loading </div>
+            )}
           </div>
         </div>
       </div>

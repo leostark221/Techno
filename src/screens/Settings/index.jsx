@@ -57,7 +57,7 @@ export default function Settings() {
                       />
                       <input
                         type="password"
-                        className="w-full pl-6 bg-transparent focus:outline-none w-full bg-transparent border border-selectedNav h-16 rounded-2xl"
+                        className="w-full pl-6 bg-transparent focus:outline-none   border border-selectedNav h-16 rounded-2xl"
                         placeholder="***********"
                         disabled={locked}
                       />
@@ -70,7 +70,7 @@ export default function Settings() {
                       />
                       <input
                         type="password"
-                        className="w-full pl-6 bg-transparent focus:outline-none w-full bg-transparent border border-selectedNav h-16 rounded-2xl"
+                        className="w-full pl-6 bg-transparent focus:outline-none  border border-selectedNav h-16 rounded-2xl"
                         placeholder="Change Password"
                       />
                     </div>

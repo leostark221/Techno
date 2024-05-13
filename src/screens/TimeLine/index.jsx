@@ -1,4 +1,4 @@
-import React, { PureComponent } from "react";
+import React, { PureComponent, useState } from "react";
 import { useEffect } from "react";
 import {
   ResponsiveContainer,
@@ -20,27 +20,25 @@ import {
   Cell,
   Scatter,
 } from "recharts";
+import { fetchData } from "../../services/api/api";
 
 export default function GraphTimeLine() {
-  const data = [
-    { time: "01:00", temperature: 22, humidity: 42, voltage: 210 },
-    { time: "02:00", temperature: 21, humidity: 52, voltage: 215 },
-    { time: "03:00", temperature: 23, humidity: 63, voltage: 220 },
-    { time: "04:00", temperature: 18, humidity: 23, voltage: 220 },
-    { time: "05:00", temperature: 17, humidity: 63, voltage: 220 },
-    { time: "06:00", temperature: 16, humidity: 12, voltage: 220 },
-    { time: "07:00", temperature: 12, humidity: 63, voltage: 220 },
-    { time: "08:00", temperature: 12, humidity: 5, voltage: 220 },
-    { time: "09:00", temperature: 12, humidity: 4, voltage: 220 },
-    { time: "10:00", temperature: 13, humidity: 63, voltage: 220 },
-    { time: "11:00", temperature: 10, humidity: 63, voltage: 220 },
-    { time: "12:00", temperature: 7, humidity: 2, voltage: 220 },
-    { time: "01:00", temperature: 6, humidity: 56, voltage: 220 },
-    { time: "02:00", temperature: 2, humidity: 23, voltage: 220 },
-    { time: "03:00", temperature: -1, humidity: 23, voltage: 220 },
-    // Additional data points...
-  ];
+  const [data, setData] = useState([]);
   const COLORS = ["#0088FE", "#00C49F", "#FFBB28"];
+
+  const apiData = async () => {
+    try {
+      const incomingData = await fetchData();
+      setData(incomingData);
+    } catch {
+      console.log("THIS DATA NOT COMMING :(");
+    }
+  };
+
+  useEffect(() => {
+    apiData();
+    console.log("THis is Data ---,.>", data);
+  }, []);
 
   const renderActiveShape = (props) => {
     const RADIAN = Math.PI / 180;
@@ -87,33 +85,82 @@ export default function GraphTimeLine() {
   };
 
   return (
-    <div className="bg-bodyColor h-screen flex flex-col justify-center overflow-auto ">
-      <div className="ml-[90px] sm:ml-[245px] md:ml-[300px] mr-2 h-full pt-10 pr-10  ">
+    <div className="bg-bodyColor h-screen flex flex-col justify-center overflow-auto  ">
+      <div className="ml-[90px] sm:ml-[245px] md:ml-[300px] mr-2 h-full pt-10 md:pr-10  ">
         <div className="text-black font-bold text-xl sm:text-3xl w-full flex justify-start">
           Time Line
         </div>
-        <div className=" mt-5 flex flex-col w-full ">
-          <div className=" h-full flex w-full gap-5 flex-col ">
+        <div className=" mt-5 flex flex-col w-full  ">
+          <div className=" h-full flex w-full  flex-col ">
             <div className="flex justify-center text-black font-bold text-2xl pt-2">
               Machine One
             </div>
             <div
-              className="bg-white py-2 "
-              style={{ width: "100%", height: 300 }}
+              className="bg-white  h-[400px] flex flex-col items-center justify-center "
+              style={{ width: "100%" }}
             >
               <div className="text-center text-2xl ">Temp Based Time</div>
               <ResponsiveContainer width="100%" height={300}>
-                <BarChart data={data}>
-                  <CartesianGrid strokeDasharray="3 3" />
-                  <XAxis dataKey="time" />
-                  <YAxis />
+                <ComposedChart data={data}>
+                  <CartesianGrid stroke="#f5f5f5" />
+                  <XAxis dataKey="fulldate" />
+                  <YAxis
+                    yAxisId="left"
+                    orientation="left"
+                    stroke="#8884d8"
+                    label={{
+                      value: "Temperature (°C)",
+                      angle: -90,
+                      position: "insideLeft",
+                    }}
+                  />
+                  <YAxis
+                    yAxisId="right"
+                    orientation="right"
+                    stroke="#82ca9d"
+                    label={{
+                      value: "Voltage (V) / Current (A)",
+                      angle: -90,
+                      position: "insideRight",
+                    }}
+                  />
                   <Tooltip />
                   <Legend />
-                  <Bar dataKey="temperature" fill="#8884d8" />
-                </BarChart>
+                  <Line
+                    yAxisId="left"
+                    type="monotone"
+                    dataKey="nctemp"
+                    stroke="#8884d8"
+                    name="Non-contact Temp"
+                  />
+                  <Line
+                    yAxisId="left"
+                    type="monotone"
+                    dataKey="temp"
+                    stroke="#82ca9d"
+                    name="Contact Temp"
+                  />
+                  <Line
+                    yAxisId="right"
+                    type="monotone"
+                    dataKey="volt"
+                    stroke="#413ea0"
+                    name="Voltage"
+                  />
+                  <Line
+                    yAxisId="right"
+                    type="monotone"
+                    dataKey="curr"
+                    stroke="#ffc658"
+                    name="Current"
+                  />
+                </ComposedChart>
               </ResponsiveContainer>
             </div>
-            <div className="bg-white" style={{ width: "100%" }}>
+            <div
+              className="bg-white h-[400px] flex items-center mt-4"
+              style={{ width: "100%" }}
+            >
               <ResponsiveContainer width="100%" height={300}>
                 <BarChart data={data}>
                   <CartesianGrid strokeDasharray="3 3" />
@@ -126,8 +173,11 @@ export default function GraphTimeLine() {
                 </BarChart>
               </ResponsiveContainer>
             </div>
-            <div className="bg-white">
-              <ResponsiveContainer width="100%" height={300}>
+            <div
+              className="bg-white h-[400px] flex flex-col items-center justify-center
+            mt-4"
+            >
+              {/* <ResponsiveContainer width="100%">
                 <PieChart>
                   <Legend />
                   <Pie
@@ -141,7 +191,7 @@ export default function GraphTimeLine() {
                     activeShape={renderActiveShape}
                     labelLine={false}
                   >
-                    {data.map((entry, index) => (
+                    {data?.map((entry, index) => (
                       <Cell
                         key={`cell-${index}`}
                         fill={COLORS[index % COLORS.length]}
@@ -150,13 +200,13 @@ export default function GraphTimeLine() {
                   </Pie>
                   <Tooltip content={renderCustomTooltip} />
                 </PieChart>
-              </ResponsiveContainer>
+              </ResponsiveContainer> */}
             </div>
           </div>
           <div className=" h-full flex w-full gap-5 flex-col mt-[4%] ">
             <div
-              className="bg-white py-2 "
-              style={{ width: "100%", height: 300 }}
+              className="bg-white h-[400px] flex flex-col items-center justify-center "
+              style={{ width: "100%" }}
             >
               <div className="text-center text-2xl ">
                 Temp & voltage based Time
@@ -187,7 +237,10 @@ export default function GraphTimeLine() {
                 </ComposedChart>
               </ResponsiveContainer>
             </div>
-            <div className="bg-white" style={{ width: "100%" }}>
+            <div
+              className="bg-white h-[400px] flex flex-col items-center justify-center mb-10"
+              style={{ width: "100%" }}
+            >
               <ResponsiveContainer width="100%" height={300}>
                 <BarChart data={data}>
                   <CartesianGrid strokeDasharray="3 3" />
