@@ -38,6 +38,18 @@ export const deleteUser = async (userId) => {
   }
 };
 
+export const deleteMachine = async (machineId) => {
+  try {
+    const response = await axios.delete(`${API_BASE_URL}/deletemachines.php`, {
+      data: { m_id: machineId },
+    });
+    return response.data;
+  } catch (error) {
+    console.error("Error deleting machine:", error);
+    throw error;
+  }
+};
+
 export const insertData = (data) => {
   return axios
     .post(`${API_BASE_URL}/insert_data.php`, data)

@@ -2,27 +2,26 @@ import React, { useEffect, useState } from "react";
 import {
   assignMachinesToUser,
   fetchUsers,
-  signupUser,
   uploadUser,
   deleteUser,
+  deleteMachine,
 } from "../../services/api/api";
 
 export default function Admin() {
   const [select, setSelected] = useState("adduser");
-  const [locked, setLocked] = useState(true);
   const [userData, setUsersData] = useState([]);
   const [error, setError] = useState("");
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [m_id, setM_id] = useState("");
   const [userId, setUserId] = useState("");
+  const [machineId, setMachineId] = useState("");
   const [machineUsername, setMachineUsername] = useState("");
 
   const userDataShow = async () => {
     try {
       const fetchedData = await fetchUsers();
       if (fetchedData && Array.isArray(fetchedData.records)) {
-        // Ensure fetchedData.records is an array
         setUsersData(fetchedData.records);
       } else {
         throw new Error("Data is not in expected format");
@@ -82,26 +81,38 @@ export default function Admin() {
     }
   };
 
+  const handleDeleteMachine = async (machineId) => {
+    try {
+      const response = await deleteMachine(machineId);
+      console.log("Delete Success:", response);
+      alert("Machine deleted successfully!");
+      userDataShow(); // Refresh the user data
+    } catch (error) {
+      console.error("Delete failed:", error);
+      alert("Delete failed: " + error.message);
+    }
+  };
+
   useEffect(() => {
     userDataShow();
     console.log(userData);
   }, []);
 
   return (
-    <div className="bg-bodyColor h-screen flex flex-col justify-center overflow-auto ">
-      <div className="pt-10 max-w-screen-2xl mx-[300px] mr-2 h-full  ">
-        <div className=" mt-10 flex flex-col gap-10  justify-center ">
-          <div className=" h-[800px] w-full  flex flex-col ">
+    <div className="bg-bodyColor h-screen flex flex-col justify-center overflow-auto">
+      <div className="pt-10 max-w-screen-2xl mx-[300px] mr-2 h-full">
+        <div className="mt-10 flex flex-col gap-10 justify-center">
+          <div className="h-[800px] w-full flex flex-col">
             <div className="text-black font-bold text-4xl w-full flex justify-center">
               Configure Accounts
             </div>
             <div className="mt-10 h-full flex justify-between">
-              <div className="w-96 h-full bg-sideNavcolor rounded-2xl flex flex-col p-20 items-center justify-evenly shadow-[0_3px_10px_rgb(0,0,0,0.2)] mr-4   ">
+              <div className="w-96 h-full bg-sideNavcolor rounded-2xl flex flex-col p-20 items-center justify-evenly shadow-[0_3px_10px_rgb(0,0,0,0.2)] mr-4">
                 <div
                   className={
                     select === "adduser"
-                      ? ` text-selectedNav  text-2xl cursor-pointer active:opacity-50`
-                      : `text-black  text-2xl cursor-pointer active:opacity-50`
+                      ? `text-selectedNav text-2xl cursor-pointer active:opacity-50`
+                      : `text-black text-2xl cursor-pointer active:opacity-50`
                   }
                   onClick={() => setSelected("adduser")}
                 >
@@ -110,8 +121,8 @@ export default function Admin() {
                 <div
                   className={
                     select === "assignMachines"
-                      ? ` text-selectedNav text-2xl cursor-pointer active:opacity-50`
-                      : `text-black  text-2xl cursor-pointer active:opacity-50`
+                      ? `text-selectedNav text-2xl cursor-pointer active:opacity-50`
+                      : `text-black text-2xl cursor-pointer active:opacity-50`
                   }
                   onClick={() => setSelected("assignMachines")}
                 >
@@ -120,8 +131,8 @@ export default function Admin() {
                 <div
                   className={
                     select === "profile"
-                      ? ` text-selectedNav  text-2xl cursor-pointer active:opacity-50`
-                      : `text-black  text-2xl cursor-pointer active:opacity-50`
+                      ? `text-selectedNav text-2xl cursor-pointer active:opacity-50`
+                      : `text-black text-2xl cursor-pointer active:opacity-50`
                   }
                   onClick={() => setSelected("profile")}
                 >
@@ -130,21 +141,18 @@ export default function Admin() {
                 <div
                   className={
                     select === "delete"
-                      ? ` text-selectedNav text-2xl cursor-pointer active:opacity-50`
-                      : `text-black  text-2xl cursor-pointer active:opacity-50`
+                      ? `text-selectedNav text-2xl cursor-pointer active:opacity-50`
+                      : `text-black text-2xl cursor-pointer active:opacity-50`
                   }
                   onClick={() => setSelected("delete")}
                 >
                   Delete Account
                 </div>
               </div>
-              <div
-                className="w-[70%] bg-sideNavcolor  flex flex-col text-black p-10 rounded-2xl
-              shadow-[0_3px_10px_rgb(0,0,0,0.2)]"
-              >
+              <div className="w-[70%] bg-sideNavcolor flex flex-col text-black p-10 rounded-2xl shadow-[0_3px_10px_rgb(0,0,0,0.2)]">
                 {select === "profile" ? (
-                  <div className="shadow-[0_3px_10px_rgb(0,0,0,0.2)] h-full max-h-[100%] overflow-auto items-center  flex flex-col">
-                    <div className="flex h-10 text-xs sm:text-sm md:text-base items-center border px-4 py-2 justify-between w-[80%]  mt-3">
+                  <div className="shadow-[0_3px_10px_rgb(0,0,0,0.2)] h-full max-h-[100%] overflow-auto items-center flex flex-col">
+                    <div className="flex h-10 text-xs sm:text-sm md:text-base items-center border px-4 py-2 justify-between w-[80%] mt-3">
                       <div>Machine ID</div>
                       <div>Machine Name</div>
                       <div>User Id</div>
@@ -163,14 +171,14 @@ export default function Admin() {
                     ))}
                   </div>
                 ) : select === "delete" ? (
-                  <div className="mt-10 ">
+                  <div className="mt-10">
                     <div className="text-2xl text-selectedNav cursor-pointer active:opacity-50">
                       Delete Account
                     </div>
                     <div className="w-full flex flex-col gap-4 pt-5">
                       <input
                         type="text"
-                        className="bg-transparent  border pl-4 rounded-3xl h-10 border-selectedNav w-full focus:outline-none"
+                        className="bg-transparent border pl-4 rounded-3xl h-10 border-selectedNav w-full focus:outline-none"
                         placeholder="Enter User ID to delete"
                         value={userId}
                         onChange={(e) => setUserId(e.target.value)}
@@ -179,41 +187,51 @@ export default function Admin() {
                         onClick={() => handleDeleteUser(userId)}
                         className="bg-red-500 text-white p-2 rounded"
                       >
-                        Delete
+                        Delete User
+                      </button>
+                    </div>
+                    <div className="w-full flex flex-col gap-4 pt-5">
+                      <div className="flex">
+                        <input
+                          type="text"
+                          className="bg-transparent border pl-4 rounded-3xl h-10 border-selectedNav w-full focus:outline-none"
+                          placeholder="Enter Machine ID to delete"
+                          value={machineId}
+                          onChange={(e) => setMachineId(e.target.value)}
+                        />
+                      </div>
+                      <button
+                        onClick={() => handleDeleteMachine(machineId)}
+                        className="bg-red-500 text-white p-2 rounded"
+                      >
+                        Delete Machine
                       </button>
                     </div>
                   </div>
                 ) : select === "adduser" ? (
-                  <div className="mt-10 ">
+                  <div className="mt-10">
                     <div className="text-2xl text-selectedNav cursor-pointer active:opacity-50">
                       Add Users
                     </div>
                     <div className="w-full flex gap-4 pt-5">
                       <input
                         type="text"
-                        className="bg-transparent  border pl-4 rounded-3xl h-10 border-selectedNav w-full focus:outline-none"
+                        className="bg-transparent border pl-4 rounded-3xl h-10 border-selectedNav w-full focus:outline-none"
                         placeholder="Add Username"
                         value={username}
                         onChange={(e) => setUsername(e.target.value)}
                       />
                       <input
-                        type="text"
-                        className="bg-transparent h-10 pl-4   border border-selectedNav w-full focus:outline-none rounded-3xl"
-                        placeholder="Enter Machine Id"
-                        value={m_id}
-                        onChange={(e) => setM_id(e.target.value)}
-                      />
-                      <input
                         type="password"
-                        className="bg-transparent h-10 pl-4   border border-selectedNav w-full focus:outline-none rounded-3xl"
+                        className="bg-transparent h-10 pl-4 border border-selectedNav w-full focus:outline-none rounded-3xl"
                         placeholder="Add password"
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
                       />
                     </div>
-                    <div className="flex  w-full items-center justify-center">
+                    <div className="flex w-full items-center justify-center">
                       <div
-                        className="mt-40 flex items-center justify-center bg-selectedNav rounded-xl cursor-pointer active:opacity-50 text-white h-10 w-28 "
+                        className="mt-40 flex items-center justify-center bg-selectedNav rounded-xl cursor-pointer active:opacity-50 text-white h-10 w-28"
                         onClick={handleRegisterUser}
                       >
                         Submit
@@ -221,36 +239,36 @@ export default function Admin() {
                     </div>
                   </div>
                 ) : select === "assignMachines" ? (
-                  <div className="mt-10 ">
+                  <div className="mt-10">
                     <div className="text-2xl text-selectedNav cursor-pointer active:opacity-50">
                       Assign Machines
                     </div>
                     <div className="w-full flex gap-4 pt-5">
                       <input
                         type="text"
-                        className="bg-transparent  border pl-4 rounded-3xl h-10 border-selectedNav w-full focus:outline-none"
+                        className="bg-transparent border pl-4 rounded-3xl h-10 border-selectedNav w-full focus:outline-none"
                         placeholder="Add User Id"
                         value={userId}
                         onChange={(e) => setUserId(e.target.value)}
                       />
                       <input
                         type="text"
-                        className="bg-transparent h-10 pl-4   border border-selectedNav w-full focus:outline-none rounded-3xl"
+                        className="bg-transparent h-10 pl-4 border border-selectedNav w-full focus:outline-none rounded-3xl"
                         placeholder="Enter Machine Id"
                         value={m_id}
                         onChange={(e) => setM_id(e.target.value)}
                       />
                       <input
                         type="text"
-                        className="bg-transparent h-10 pl-4   border border-selectedNav w-full focus:outline-none rounded-3xl"
+                        className="bg-transparent h-10 pl-4 border border-selectedNav w-full focus:outline-none rounded-3xl"
                         placeholder="machine Username"
                         value={machineUsername}
                         onChange={(e) => setMachineUsername(e.target.value)}
                       />
                     </div>
-                    <div className="flex  w-full items-center justify-center">
+                    <div className="flex w-full items-center justify-center">
                       <div
-                        className="mt-40 flex items-center justify-center bg-selectedNav rounded-xl cursor-pointer active:opacity-50 text-white h-10 w-28 "
+                        className="mt-40 flex items-center justify-center bg-selectedNav rounded-xl cursor-pointer active:opacity-50 text-white h-10 w-28"
                         onClick={handleAssignMachines}
                       >
                         Submit
