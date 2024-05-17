@@ -1,7 +1,7 @@
 // Api/api.jsx
 import axios from "axios";
 
-const API_BASE_URL = "http://localhost"; // Change this according to your actual API URL
+const API_BASE_URL = "http://thegrodata.com/"; // Change this according to your actual API URL
 
 export const fetchLoggedInUsers = async (user_id) => {
   try {
