@@ -19,7 +19,6 @@ export default function GraphTimeLine() {
 
   useEffect(() => {
     const machineID = localStorage.getItem("selectedMachineID");
-    console.log("Retrieved Machine ID from Local Storage:", machineID);
     if (machineID) {
       setSelectedMachineId(machineID);
     }
@@ -27,35 +26,24 @@ export default function GraphTimeLine() {
     const apiData = async () => {
       try {
         const userId = localStorage.getItem("userID");
-        console.log("Retrieved User ID from Local Storage:", userId);
         if (userId) {
           const incomingData = await fetchLoggedInUsers(userId);
-          console.log("Fetched Data:", incomingData);
           setData(incomingData);
         }
-      } catch (error) {
-        console.log("THIS DATA NOT COMING :(", error);
-      }
+      } catch (error) {}
     };
 
     apiData();
   }, []);
 
   useEffect(() => {
-    console.log("Selected Machine ID:", selectedMachineId);
-    console.log("Data:", data);
-
     if (selectedMachineId) {
       const machine = data.find((machine) => {
-        console.log("Comparing:", machine.machineID, "with", selectedMachineId);
         return machine.machineID == selectedMachineId;
       });
-      console.log("Selected Machine:", machine);
       setFilteredData(machine ? machine.machineData : []);
     }
   }, [selectedMachineId, data]);
-
-  console.log("Filtered Data:", filteredData);
 
   return (
     <div className="bg-bodyColor h-screen flex flex-col justify-center overflow-auto">

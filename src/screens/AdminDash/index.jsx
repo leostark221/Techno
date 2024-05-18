@@ -35,7 +35,6 @@ export default function Admin() {
   const handleRegisterUser = async () => {
     try {
       const response = await uploadUser({ username, password });
-      console.log("Registration Success:", response.data);
       alert("User registered successfully!");
       userDataShow(); // Refresh the user data
     } catch (error) {
@@ -55,7 +54,6 @@ export default function Admin() {
 
     try {
       const response = await assignMachinesToUser(userId, machines);
-      console.log("Assignment Success:", response.data);
       alert("Machines assigned successfully!");
     } catch (error) {
       console.error(
@@ -72,7 +70,6 @@ export default function Admin() {
   const handleDeleteUser = async (userId) => {
     try {
       const response = await deleteUser(userId);
-      console.log("Delete Success:", response);
       alert("User deleted successfully!");
       userDataShow(); // Refresh the user data
     } catch (error) {
@@ -84,7 +81,6 @@ export default function Admin() {
   const handleDeleteMachine = async (machineId) => {
     try {
       const response = await deleteMachine(machineId);
-      console.log("Delete Success:", response);
       alert("Machine deleted successfully!");
       userDataShow(); // Refresh the user data
     } catch (error) {
@@ -95,24 +91,23 @@ export default function Admin() {
 
   useEffect(() => {
     userDataShow();
-    console.log(userData);
   }, []);
 
   return (
     <div className="bg-bodyColor h-screen flex flex-col justify-center overflow-auto">
-      <div className="pt-10 max-w-screen-2xl mx-[300px] mr-2 h-full">
-        <div className="mt-10 flex flex-col gap-10 justify-center">
+      <div className="pt-10 max-w-screen-2xl ml-[84px] sm:ml-[249px] xl:mx-[260px] lg:mr-2 h-full">
+        <div className="mt-10 flex flex-col  justify-center">
           <div className="h-[800px] w-full flex flex-col">
             <div className="text-black font-bold text-4xl w-full flex justify-center">
               Configure Accounts
             </div>
             <div className="mt-10 h-full flex justify-between">
-              <div className="w-96 h-full bg-sideNavcolor rounded-2xl flex flex-col p-20 items-center justify-evenly shadow-[0_3px_10px_rgb(0,0,0,0.2)] mr-4">
+              <div className="w-12 p-14 lg:w-96 h-full bg-sideNavcolor rounded-2xl flex flex-col lg:p-20 items-center justify-evenly shadow-[0_3px_10px_rgb(0,0,0,0.2)] mr-4">
                 <div
                   className={
                     select === "adduser"
-                      ? `text-selectedNav text-2xl cursor-pointer active:opacity-50`
-                      : `text-black text-2xl cursor-pointer active:opacity-50`
+                      ? `text-selectedNav text-lg lg:text-2xl cursor-pointer active:opacity-50`
+                      : `text-black text-lg lg:text-2xl cursor-pointer active:opacity-50`
                   }
                   onClick={() => setSelected("adduser")}
                 >
@@ -121,8 +116,8 @@ export default function Admin() {
                 <div
                   className={
                     select === "assignMachines"
-                      ? `text-selectedNav text-2xl cursor-pointer active:opacity-50`
-                      : `text-black text-2xl cursor-pointer active:opacity-50`
+                      ? `text-selectedNav text-lg lg:text-2xl cursor-pointer active:opacity-50`
+                      : `text-black text-lg lg:text-2xl cursor-pointer active:opacity-50`
                   }
                   onClick={() => setSelected("assignMachines")}
                 >
@@ -131,8 +126,8 @@ export default function Admin() {
                 <div
                   className={
                     select === "profile"
-                      ? `text-selectedNav text-2xl cursor-pointer active:opacity-50`
-                      : `text-black text-2xl cursor-pointer active:opacity-50`
+                      ? `text-selectedNav text-lg lg:text-2xl cursor-pointer active:opacity-50`
+                      : `text-black text-lg lg:text-2xl cursor-pointer active:opacity-50`
                   }
                   onClick={() => setSelected("profile")}
                 >
@@ -141,15 +136,15 @@ export default function Admin() {
                 <div
                   className={
                     select === "delete"
-                      ? `text-selectedNav text-2xl cursor-pointer active:opacity-50`
-                      : `text-black text-2xl cursor-pointer active:opacity-50`
+                      ? `text-selectedNav text-lg lg:text-2xl cursor-pointer active:opacity-50`
+                      : `text-black text-lg lg:text-2xl cursor-pointer active:opacity-50`
                   }
                   onClick={() => setSelected("delete")}
                 >
                   Delete Account
                 </div>
               </div>
-              <div className="w-[70%] bg-sideNavcolor flex flex-col text-black p-10 rounded-2xl shadow-[0_3px_10px_rgb(0,0,0,0.2)]">
+              <div className="w-full lg:w-[70%] bg-sideNavcolor flex flex-col text-black p-10 rounded-2xl shadow-[0_3px_10px_rgb(0,0,0,0.2)]">
                 {select === "profile" ? (
                   <div className="shadow-[0_3px_10px_rgb(0,0,0,0.2)] h-full max-h-[100%] overflow-auto items-center flex flex-col">
                     <div className="flex h-10 text-xs sm:text-sm md:text-base items-center border px-4 py-2 justify-between w-[80%] mt-3">
@@ -213,7 +208,7 @@ export default function Admin() {
                     <div className="text-2xl text-selectedNav cursor-pointer active:opacity-50">
                       Add Users
                     </div>
-                    <div className="w-full flex gap-4 pt-5">
+                    <div className="w-full flex lg:flex-row flex-col gap-4 pt-5">
                       <input
                         type="text"
                         className="bg-transparent border pl-4 rounded-3xl h-10 border-selectedNav w-full focus:outline-none"
@@ -243,7 +238,7 @@ export default function Admin() {
                     <div className="text-2xl text-selectedNav cursor-pointer active:opacity-50">
                       Assign Machines
                     </div>
-                    <div className="w-full flex gap-4 pt-5">
+                    <div className="w-full flex lg:flex-row flex-col  gap-4 pt-5">
                       <input
                         type="text"
                         className="bg-transparent border pl-4 rounded-3xl h-10 border-selectedNav w-full focus:outline-none"

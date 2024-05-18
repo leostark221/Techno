@@ -21,10 +21,8 @@ export default function UserLogin() {
         localStorage.setItem("userID", response.user_id); // Save the user ID from the response
         dispatch(userLogin(response.token, response.user_id)); // Pass both token and user ID
         navigate("/"); // Navigate to the home page
-        console.log("SUCCESS USER LOGGED IN");
       } else {
         setError("Login failed:" + response.message); // Display error from server
-        console.log(":(");
       }
     } catch (error) {
       setError("Login error:" + error.message);
@@ -43,7 +41,6 @@ export default function UserLogin() {
         onsole.log("SUCCESS ADMIN LOGGED IN");
       } else {
         setError("Login failed: " + response.message); // Display error from server
-        console.log(":(");
       }
     } catch (error) {
       if ((username == "") | (password == "")) {
