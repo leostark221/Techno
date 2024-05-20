@@ -144,8 +144,8 @@ export default function Admin() {
             <div className="text-black font-bold text-lg sm:text-4xl w-full flex justify-center">
               Configure Accounts
             </div>
-            <div className="mt-10 h-full flex justify-between">
-              <div className="w-12 p-14 lg:w-96 h-full bg-sideNavcolor rounded-2xl flex flex-col lg:p-20 items-center justify-evenly shadow-[0_3px_10px_rgb(0,0,0,0.2)] mr-4">
+            <div className="mt-10 h-full flex  flex-col lg:flex-row  justify-between">
+              <div className="w-full h-full bg-sideNavcolor rounded-2xl flex flex-col lg:p-20 items-center justify-evenly shadow-[0_3px_10px_rgb(0,0,0,0.2)] mr-4">
                 <div
                   className={
                     select === "adduser"
@@ -197,10 +197,10 @@ export default function Admin() {
                   Delete Account
                 </div>
               </div>
-              <div className="w-full lg:w-[70%] bg-sideNavcolor flex flex-col text-black p-10 rounded-2xl shadow-[0_3px_10px_rgb(0,0,0,0.2)]">
+              <div className="w-full  bg-sideNavcolor flex flex-col text-black p-4 lg:p-10 rounded-2xl shadow-[0_3px_10px_rgb(0,0,0,0.2)]">
                 {select === "profile" ? (
                   <div className="shadow-[0_3px_10px_rgb(0,0,0,0.2)] h-full max-h-[100%] overflow-auto items-center flex flex-col">
-                    <div className="flex h-10 text-xs sm:text-sm md:text-base items-center border px-4 py-2 justify-between w-[80%] mt-3">
+                    <div className="flex h-10 text-xs sm:text-sm md:text-base items-center border  justify-between w-full mt-3">
                       <div>Machine ID</div>
                       <div>Machine Name</div>
                       <div>User Id</div>
@@ -209,7 +209,8 @@ export default function Admin() {
                     {userData.map((item, index) => (
                       <div
                         key={index}
-                        className="flex h-10 text-xs sm:text-sm md:text-base items-center border px-4 py-2 justify-between w-[80%] hover:bg-selectedNav cursor-pointer hover:text-white mt-3"
+                        className="flex h-10 text-xs sm:text-sm md:text-base items-center border px-4 py-2 justify-between w-[100%]
+                         hover:bg-selectedNav cursor-pointer hover:text-white mt-3 "
                       >
                         <div>{item?.machine_id}</div>
                         <div>{item?.machine_name}</div>

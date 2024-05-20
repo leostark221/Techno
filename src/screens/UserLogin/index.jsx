@@ -105,11 +105,11 @@ export default function UserLogin() {
             className="bg-selectedNav text-white h-10 w-24 mb-4 flex items-center justify-center active:opacity-50 cursor-pointer"
             onClick={() => {
               if (UA === "admin") {
-                // handleAdminLogin();
-                navigate("/admin");
+                handleAdminLogin();
+                // navigate("/admin");
               } else {
-                // handleUserLogin();
-                navigate("/");
+                handleUserLogin();
+                // navigate("/");
               }
             }}
           >
