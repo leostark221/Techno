@@ -27,8 +27,8 @@ export default function SideNav() {
       <div className="items-center  gap-6 h-full mt-4 sm:w-40 flex flex-col ">
         <img src={images.logo} alt="" />
         {activePath !== "/admin" ? (
-          <div>
-            <div className=" gap-3 cursor-pointer active:opacity-50 flex items-center justify-center  w-full mt-10 ">
+          <div className="flex flex-col gap-20">
+            <div className=" gap-3 cursor-pointer active:opacity-50 flex items-center justify-center w-full   ">
               <div
                 className={
                   activePath == "/"
@@ -45,7 +45,7 @@ export default function SideNav() {
                 <div className="hidden sm:flex">Home</div>
               </div>
             </div>
-            <div className=" gap-3 cursor-pointer active:opacity-50 flex items-center justify-center  w-full mt-10 ">
+            <div className=" gap-3 cursor-pointer active:opacity-50 flex items-center justify-center  w-full  ">
               <div
                 className={
                   activePath == "/TimeLine"
@@ -66,7 +66,7 @@ export default function SideNav() {
                 <div className="sm:flex hidden">Time Line</div>
               </div>
             </div>
-            <div className=" gap-3 cursor-pointer active:opacity-50 flex items-center justify-center  w-full mt-10 ">
+            <div className=" gap-3 cursor-pointer active:opacity-50 flex items-center justify-center  w-full  ">
               <div
                 className={
                   activePath == "/monitor"
@@ -87,31 +87,16 @@ export default function SideNav() {
                 <div className="sm:flex hidden">Monitor</div>
               </div>
             </div>
-            {/* <div className="gap-3 cursor-pointer active:opacity-50 flex items-center justify-center  w-full mt-10">
-              <div
-                className={
-                  activePath == "/setting"
-                    ? `sm:w-40 p-2 border-2 rounded-lg flex items-center-center gap-2  bg-selectedNav text-white font-bold`
-                    : `sm:w-40 p-2 flex items-center-center gap-2   text-baseText font-bold`
-                }
-                onClick={() => navigate("/setting")}
-              >
-                <img
-                  src={
-                    activePath == "/setting"
-                      ? images.settings
-                      : images.notSelectedsettings
-                  }
-                  alt=""
-                  className="h-5 w-5"
-                />
-                <div className="sm:flex hidden">Settings</div>
-              </div>
-            </div> */}
+            <div
+              className="h-10 bg-selectedNav text-white mb-4 flex items-center justify-center px-2 text-xs sm:text-base sm:w-24 rounded-xl  cursor-pointer active:opacity-50"
+              onClick={handleLogout}
+            >
+              Log Out
+            </div>
           </div>
         ) : (
-          <div>
-            <div className=" gap-3 cursor-pointer active:opacity-50 flex items-center justify-center  w -full mt-10 ">
+          <div className=" flex flex-col gap-20">
+            <div className=" gap-3 cursor-pointer active:opacity-50 flex items-center justify-center  w-full mt-10 ">
               <div
                 className={
                   activePath == "/admin"
@@ -132,15 +117,21 @@ export default function SideNav() {
                 <div className="hidden sm:flex">Configure Acc</div>
               </div>
             </div>
+            <div
+              className="h-10 bg-selectedNav text-white mb-4 flex items-center justify-center px-2 text-xs sm:text-base sm:w-24 rounded-xl  cursor-pointer active:opacity-50"
+              onClick={handleLogout}
+            >
+              Log Out
+            </div>
           </div>
         )}
       </div>
-      <div
-        className="h-10 bg-selectedNav text-white mb-4 flex items-center justify-center w-24 rounded-xl  cursor-pointer active:opacity-50"
+      {/* <div
+        className="h-10 bg-selectedNav text-white mb-4 flex items-center justify-center px-2 text-xs sm:text-base sm:w-24 rounded-xl  cursor-pointer active:opacity-50"
         onClick={handleLogout}
       >
         Log Out
-      </div>
+      </div> */}
     </div>
   );
 }

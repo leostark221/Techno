@@ -54,12 +54,12 @@ export default function UserLogin() {
 
   return (
     <div className="flex w-full flex-col justify-center items-center h-screen bg-backgroundColor ">
-      <div className="mb-10  flex gap-4 bg-white  items-center justify-center h-12 w-60 rounded-3xl">
+      <div className="mb-5 sm:mb-10  flex gap-4 bg-white  items-center justify-center h-12 w-40 sm:w-60 rounded-3xl">
         <div
           className={`${
             UA === "user"
-              ? `bg-selectedNav active:opacity-50 cursor-pointer border-blue-500 border text-white font-semibold w-full h-full flex justify-center items-center rounded-3xl`
-              : `bg-white active:opacity-50  cursor-pointer font-semibold w-full h-full flex justify-center items-center rounded-3xl`
+              ? `bg-selectedNav active:opacity-50 cursor-pointer text-xs sm:text-base border-blue-500 border text-white font-semibold w-full h-full flex justify-center items-center rounded-3xl`
+              : `bg-white active:opacity-50  cursor-pointer font-semibold text-xs sm:text-base w-full h-full flex justify-center items-center rounded-3xl`
           } `}
           onClick={() => setUA("user")}
         >
@@ -69,15 +69,15 @@ export default function UserLogin() {
           onClick={() => setUA("admin")}
           className={`${
             UA === "admin"
-              ? `bg-selectedNav active:opacity-50 border-blue-500 border cursor-pointer text-white font-semibold w-full h-full flex justify-center items-center rounded-3xl`
-              : `bg-white active:opacity-50 cursor-pointer font-semibold w-full h-full flex justify-center items-center rounded-3xl`
+              ? `bg-selectedNav active:opacity-50 border-blue-500 border cursor-pointer text-xs sm:text-base text-white font-semibold w-full h-full flex justify-center items-center rounded-3xl`
+              : `bg-white active:opacity-50 cursor-pointer font-semibold w-full h-full text-xs sm:text-base flex justify-center items-center rounded-3xl`
           }`}
         >
           ADMIN
         </div>
       </div>
       <div
-        className="flex flex-col bg-white h-[500px] items-center justify-between w-[500px]
+        className="flex flex-col bg-white h-[500px] items-center justify-between sm:w-[500px]
       shadow-[0_3px_10px_rgb(0,0,0,0.2)]"
       >
         {UA === "admin" ? (
@@ -105,9 +105,11 @@ export default function UserLogin() {
             className="bg-selectedNav text-white h-10 w-24 mb-4 flex items-center justify-center active:opacity-50 cursor-pointer"
             onClick={() => {
               if (UA === "admin") {
-                handleAdminLogin();
+                // handleAdminLogin();
+                navigate("/admin");
               } else {
-                handleUserLogin();
+                // handleUserLogin();
+                navigate("/");
               }
             }}
           >

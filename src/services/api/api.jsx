@@ -1,7 +1,7 @@
 // Api/api.jsx
 import axios from "axios";
 
-const API_BASE_URL = "http://thegrodata.com/"; // Change this according to your actual API URL
+const API_BASE_URL = "http://localhost"; // Change this according to your actual API URL
 
 export const fetchLoggedInUsers = async (user_id) => {
   try {
@@ -22,6 +22,42 @@ export const fetchData = async (user_id) => {
     return response.data; // this will be your machine data
   } catch (error) {
     console.error("Error fetching machine data:", error);
+    throw error;
+  }
+};
+
+export const changeUserPassword = async (
+  admin_password,
+  user_id,
+  new_password
+) => {
+  try {
+    const response = await axios.post(
+      `${API_BASE_URL}/changeUserPassword.php`,
+      {
+        admin_password,
+        user_id,
+        new_password,
+      }
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Error changing user password:", error);
+    throw error;
+  }
+};
+
+export const resetAdminPassword = async (email) => {
+  try {
+    const response = await axios.post(
+      `${API_BASE_URL}/requestPasswordReset.php`,
+      {
+        email,
+      }
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Error resetting admin password:", error);
     throw error;
   }
 };

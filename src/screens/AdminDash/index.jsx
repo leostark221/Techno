@@ -5,6 +5,8 @@ import {
   uploadUser,
   deleteUser,
   deleteMachine,
+  resetAdminPassword,
+  changeUserPassword,
 } from "../../services/api/api";
 
 export default function Admin() {
@@ -17,6 +19,15 @@ export default function Admin() {
   const [userId, setUserId] = useState("");
   const [machineId, setMachineId] = useState("");
   const [machineUsername, setMachineUsername] = useState("");
+  const [newPassword, setNewPassword] = useState("");
+  const [adminEmail, setAdminEmail] = useState("");
+  const [adminPassword, setAdminPassword] = useState("");
+  const [email, setEmail] = useState("");
+  const [message, setMessage] = useState("");
+
+  useEffect(() => {
+    userDataShow();
+  }, []);
 
   const userDataShow = async () => {
     try {
@@ -89,16 +100,48 @@ export default function Admin() {
     }
   };
 
-  useEffect(() => {
-    userDataShow();
-  }, []);
+  const handleChangeUserPassword = async () => {
+    console.log("Admin Password:", adminPassword);
+    console.log("User ID:", userId);
+    console.log("New Password:", newPassword);
+
+    try {
+      const response = await changeUserPassword(
+        adminPassword,
+        userId,
+        newPassword
+      );
+      alert(response.message);
+    } catch (error) {
+      console.error("Failed to change user password:", error);
+      alert("Failed to change user password: " + error.message);
+    }
+  };
+
+  const handleResetAdminPassword = async () => {
+    try {
+      const response = await resetAdminPassword(adminEmail);
+      alert(response.message);
+    } catch (error) {
+      alert("Failed to reset admin password: " + error.message);
+    }
+  };
+
+  const handleResetPassword = async () => {
+    try {
+      const response = await resetAdminPassword(email);
+      setMessage(response.message);
+    } catch (error) {
+      setMessage("Error: " + error.message);
+    }
+  };
 
   return (
     <div className="bg-bodyColor h-screen flex flex-col justify-center overflow-auto">
       <div className="pt-10 max-w-screen-2xl ml-[84px] sm:ml-[249px] xl:mx-[260px] lg:mr-2 h-full">
         <div className="mt-10 flex flex-col  justify-center">
           <div className="h-[800px] w-full flex flex-col">
-            <div className="text-black font-bold text-4xl w-full flex justify-center">
+            <div className="text-black font-bold text-lg sm:text-4xl w-full flex justify-center">
               Configure Accounts
             </div>
             <div className="mt-10 h-full flex justify-between">
@@ -106,8 +149,8 @@ export default function Admin() {
                 <div
                   className={
                     select === "adduser"
-                      ? `text-selectedNav text-lg lg:text-2xl cursor-pointer active:opacity-50`
-                      : `text-black text-lg lg:text-2xl cursor-pointer active:opacity-50`
+                      ? `text-selectedNav text-lg text-nowrap lg:text-2xl cursor-pointer active:opacity-50`
+                      : `text-black text-lg lg:text-2xl text-nowrap cursor-pointer active:opacity-50`
                   }
                   onClick={() => setSelected("adduser")}
                 >
@@ -116,8 +159,8 @@ export default function Admin() {
                 <div
                   className={
                     select === "assignMachines"
-                      ? `text-selectedNav text-lg lg:text-2xl cursor-pointer active:opacity-50`
-                      : `text-black text-lg lg:text-2xl cursor-pointer active:opacity-50`
+                      ? `text-selectedNav text-lg lg:text-2xl  cursor-pointer active:opacity-50`
+                      : `text-black text-lg lg:text-2xl cursor-pointer  active:opacity-50`
                   }
                   onClick={() => setSelected("assignMachines")}
                 >
@@ -126,12 +169,22 @@ export default function Admin() {
                 <div
                   className={
                     select === "profile"
-                      ? `text-selectedNav text-lg lg:text-2xl cursor-pointer active:opacity-50`
-                      : `text-black text-lg lg:text-2xl cursor-pointer active:opacity-50`
+                      ? `text-selectedNav text-lg lg:text-2xl text-nowrap cursor-pointer active:opacity-50`
+                      : `text-black text-lg lg:text-2xl text-nowrap cursor-pointer active:opacity-50`
                   }
                   onClick={() => setSelected("profile")}
                 >
                   View Users
+                </div>
+                <div
+                  className={
+                    select === "changePass"
+                      ? `text-selectedNav text-lg lg:text-2xl cursor-pointer active:opacity-50`
+                      : `text-black text-lg lg:text-2xl cursor-pointer active:opacity-50`
+                  }
+                  onClick={() => setSelected("changePass")}
+                >
+                  Change Pass
                 </div>
                 <div
                   className={
@@ -267,6 +320,43 @@ export default function Admin() {
                         onClick={handleAssignMachines}
                       >
                         Submit
+                      </div>
+                    </div>
+                  </div>
+                ) : select === "changePass" ? (
+                  <div>
+                    <div>
+                      <div className="gap-10 flex flex-col">
+                        <div className="text-2xl">Change User Password</div>
+                        <input
+                          type="password"
+                          placeholder="Admin Password"
+                          value={adminPassword}
+                          className="bg-transparent h-10 pl-4 border border-selectedNav w-full focus:outline-none rounded-3xl"
+                          onChange={(e) => setAdminPassword(e.target.value)}
+                        />
+                        <input
+                          type="text"
+                          placeholder="User ID"
+                          value={userId}
+                          className="bg-transparent h-10 pl-4 border border-selectedNav w-full focus:outline-none rounded-3xl"
+                          onChange={(e) => setUserId(e.target.value)}
+                        />
+                        <input
+                          type="password"
+                          placeholder="New Password"
+                          value={newPassword}
+                          className="bg-transparent h-10 pl-4 border border-selectedNav w-full focus:outline-none rounded-3xl"
+                          onChange={(e) => setNewPassword(e.target.value)}
+                        />
+                        <div className="flex items-center justify-center w-full mt-1">
+                          <div
+                            className="bg-selectedNav text-white h-14 flex items-center justify-center  px-4 rounded-2xl cursor-pointer active:opacity-50 mt-20 "
+                            onClick={handleChangeUserPassword}
+                          >
+                            Change Password
+                          </div>
+                        </div>
                       </div>
                     </div>
                   </div>
